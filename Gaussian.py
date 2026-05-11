@@ -1,27 +1,79 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
 from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    roc_auc_score,
+    roc_curve
+)
+from sklearn.model_selection import StratifiedKFold, learning_curve
+
 
 def train_gaussian_model(x_train_selected, y_train, x_test_selected, y_test):
-    
-    # Create model
+
+    # Model
     model = GaussianNB()
-    
-    # Train model
+
+    # Train
     model.fit(x_train_selected, y_train)
-    
-    # Predict on test data
+
+    # Predictions
     y_pred = model.predict(x_test_selected)
+    y_prob = model.predict_proba(x_test_selected)[:, 1]
+
     print("Output with GaussianNB ML Model")
+
     # Accuracy
     acc = accuracy_score(y_test, y_pred)
     print("Accuracy:", acc)
-    
-    # Classification Report
+
+    # Report
     print("\nClassification Report:")
     print(classification_report(y_test, y_pred))
-    
+
     # Confusion Matrix
     print("\nConfusion Matrix:")
     print(confusion_matrix(y_test, y_pred))
-    
-    return model
+
+    # ROC-AUC
+    roc_auc = roc_auc_score(y_test, y_prob)
+    print("ROC-AUC Score:", roc_auc)
+
+    # ROC Curve
+    fpr, tpr, _ = roc_curve(y_test, y_prob)
+
+    plt.figure()
+    plt.plot(fpr, tpr, label=f"GaussianNB (AUC = {roc_auc:.4f})")
+    plt.plot([0, 1], [0, 1], linestyle="--")
+
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title("ROC Curve")
+    plt.legend()
+    plt.show()
+
+    # Learning Curve
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+
+    train_sizes, train_scores, test_scores = learning_curve(
+        model,
+        x_train_selected,
+        y_train,
+        cv=cv,
+        scoring='accuracy'
+    )
+
+    plt.figure()
+    plt.plot(train_sizes, np.mean(train_scores, axis=1), label="Train Score")
+    plt.plot(train_sizes, np.mean(test_scores, axis=1), label="CV Score")
+
+    plt.xlabel("Training Size")
+    plt.ylabel("Accuracy")
+    plt.title("Learning Curve")
+    plt.legend()
+    plt.show()
+
+    return roc_auc, acc
