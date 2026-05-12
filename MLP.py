@@ -14,7 +14,7 @@ import numpy as np
 
 def train_mlp(x_train_selected, y_train, x_test_selected, y_test):
 
-    # Scaling is required for neural networks
+    # Scaling
     scaler = StandardScaler()
 
     x_train_scaled = scaler.fit_transform(x_train_selected)
@@ -29,7 +29,7 @@ def train_mlp(x_train_selected, y_train, x_test_selected, y_test):
         random_state=42
     )
 
-    # Train (FIXED: use scaled data)
+    # Train
     model.fit(x_train_scaled, y_train)
 
     # Predictions

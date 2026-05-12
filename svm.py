@@ -14,7 +14,7 @@ import numpy as np
 
 def train_svm(x_train_selected, y_train, x_test_selected, y_test):
 
-    # Scaling is required for SVM
+    # Scaling
     scaler = StandardScaler()
 
     x_train_scaled = scaler.fit_transform(x_train_selected)

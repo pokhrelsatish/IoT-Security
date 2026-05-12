@@ -148,12 +148,12 @@ This project compares multiple ML algorithms:
 
 All models are evaluated using:
 
-- ✅ Accuracy Score
-- ✅ ROC-AUC Score
-- ✅ Confusion Matrix
-- ✅ Classification Report
-- ✅ ROC Curve
-- ✅ Learning Curve (Overfitting analysis)
+-  Accuracy Score
+-  ROC-AUC Score
+-  Confusion Matrix
+-  Classification Report
+-  ROC Curve
+-  Learning Curve (Overfitting analysis)
 
 
 ##  Model Comparison Dashboard

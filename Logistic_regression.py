@@ -14,7 +14,7 @@ import numpy as np
 
 def train_lf(x_train_selected, y_train, x_test_selected, y_test):
 
-    # Scale features (important for Logistic Regression)
+    # Scale features
     scaler = StandardScaler()
 
     x_train_scaled = scaler.fit_transform(x_train_selected)
